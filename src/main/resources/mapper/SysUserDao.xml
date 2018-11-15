@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.imooc.dao.SysUserDao">
+    <resultMap id="sysUserDao" type="User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="chName" column="ch_name"/>
+        <association property="groupUser" column="group_id" javaType="Group">
+            <result property="name" column="sname" javaType="String"/>
+        </association>
+    </resultMap>
+    <insert id="insert" parameterType="User">
+        insert into sys_user(name, password, ch_name, group_id)
+        VALUES (#{name},#{password},#{chName},#{groupId})
+    </insert>
+
+    <select id="select" resultMap="sysUserDao">
+        SELECT
+        su.id,
+        su. NAME,
+        su. PASSWORD,
+        su.ch_name,
+        sg. NAME AS sname
+        FROM
+        sys_user su
+        LEFT JOIN sys_group sg ON su.group_id = sg.id
+        <where>
+            <if test="name!=null">
+                and t.name =#{name}
+            </if>
+            <if test="chName!=null">
+                and t.ch_name=#{chName}
+            </if>
+            <if test="groupId!=null">
+                and t.group_id=#{groupId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="sysUserDao">
+               SELECT
+            su.id,
+            su. NAME,
+            su. PASSWORD,
+            su.ch_name,
+            sg. NAME AS sname
+        FROM
+            sys_user su
+        LEFT JOIN sys_group sg ON su.group_id = sg.id
+        where su.id = #{id}
+    </select>
+
+    <update id="update" parameterType="User">
+        update sys_user
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="chName != null">
+                ch_name=#{chName},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId},
+            </if>
+        </set>
+        where id=#{id}
+        <if test="name != null">
+            and not exists (select 1 from (select 1 from sys_user where name=#{name} and id!=#{id})a)
+        </if>
+    </update>
+
+
+    <delete id="delete" parameterType="Integer">
+		delete from sys_user where id=#{_parameter}
+	</delete>
+</mapper>

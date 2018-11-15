@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="org.fkjava.dto-2.0.RELEASE">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/main/java/org/imooc/test/org.fkjava.dto-2.0.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
