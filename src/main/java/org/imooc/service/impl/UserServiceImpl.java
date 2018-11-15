@@ -5,6 +5,8 @@ import org.imooc.bean.User;
 import org.imooc.dao.SysUserDao;
 import org.imooc.dto.UserDto;
 import org.imooc.service.UserService;
+import org.imooc.util.CommonUtil;
+import org.imooc.util.MD5Util;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +31,8 @@ public class UserServiceImpl implements UserService {
         users.setPassword(userDto.getPassword());
         users.setChName(userDto.getChName());
         users.setGroupId(userDto.getGroupId());
-        userDao.insert(users);
         System.out.println("添加的值是："+userDao.insert(users));
-
-        return true;
+        return  userDao.insert(users)==1;
     }
 
     @Override
@@ -41,15 +41,15 @@ public class UserServiceImpl implements UserService {
         System.out.println("userDto的值是："+userDto);
         BeanUtils.copyProperties(userDto, result);
         int updateCount = userDao.update(result);
-        if(updateCount!=1){
-           return false;
+        if(!CommonUtil.isEmpty(userDto.getPassword())){
+            userDto.setPassword(MD5Util.getMD5(userDto.getPassword()));
         }
-        return true;
+        return userDao.update(result)==1;
     }
 
     @Override
     public boolean remove(Long id) {
-        return false;
+        return userDao.delete(id)==1;
     }
 
     @Override

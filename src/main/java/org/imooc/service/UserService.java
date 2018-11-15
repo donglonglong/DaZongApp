@@ -15,15 +15,41 @@ public interface UserService {
      */
     boolean validate(UserDto userDto);
 
+    /***
+     * 获取用户列表
+     * @return
+     */
+    List<User> getList();
+    /**
+     * 新增用户
+     * @param userDto
+     * @return
+     */
     boolean add(UserDto userDto);
 
+    /***
+     * 修改用户
+     * @param userDto
+     * @return
+     */
     boolean modify(UserDto userDto);
 
+    /***
+     * 删除用户
+     * @param id
+     * @return
+     */
     boolean remove(Long id);
 
+
+    /**
+     * 通过ID获取用户
+     * @param id
+     * @return  用户对象
+     */
     UserDto getById(Long id);
 
-    List<User> getList();
+
 
 
 }
