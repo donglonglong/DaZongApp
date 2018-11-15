@@ -25,20 +25,14 @@ public class UserController {
     @RequestMapping("/list")
     public String UserList(Model model){
         model.addAttribute("list",userService.getList());
-        System.out.println("用户信息："+userService.getList());
         return "/content/userList";
     }
 
     @RequestMapping(value = "/modifyInit")
     public String modifyInit(@RequestParam("id") Long id,Model model){
-        System.out.println("ID的值是~~~~~~~~~~~~："+id);
-
-        System.out.println("user的值是："+userService.getById(id));
         model.addAttribute("modifyObj",userService.getById(id));
         model.addAttribute("groups",groupService.getAll());
         System.out.println("所有的分类是："+groupService.getAll());
-
-
         return "/content/userModify";
     }
 
@@ -46,7 +40,7 @@ public class UserController {
      * 修改用户
      */
     @RequestMapping(value = "/modify")
-    public String modify(@RequestParam("id") Long id,UserDto userDto) {
+    public String modify(@PathVariable("id") Long id,UserDto userDto) {
         userService.modify(userDto);
         return "redirect:list" ;
     }
@@ -66,6 +60,12 @@ public class UserController {
             model.addAttribute(PageCodeEnum.KEY,PageCodeEnum.ADD_FAIL );
         }
         return "redirect:list";
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public String remove(@PathVariable("id") Long id) {
+        System.out.println("获取的ID值是："+id);
+        return "redirect:/businesses";
     }
 
 

@@ -8,9 +8,9 @@ function search(currentPage) {
 }
 
 function remove(id) {
-	if(confirm("确定要删除这条广告吗？")) {
+	if(confirm("确定要删除这条广告吗?")) {
 		$("#id").val(id);
-		$("#mainForm").attr("action",$("#basePath").val() + "/ad/remove");
+		$("#mainForm").attr("action",$("#basePath").val() + "/user/remove");
 		$("#mainForm").submit();
 	}
 }

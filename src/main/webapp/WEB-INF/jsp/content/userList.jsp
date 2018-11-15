@@ -15,12 +15,12 @@
 </head>
 <body style="background: #e1e9eb;">
 <form action="${basePath}/ad/search" id="mainForm" method="post">
-    <input type="hidden" id="id" name="id"/>
     <input type="hidden" id="message" value="${pageCode.msg}"/>
     <input type="hidden" id="basePath" value="${basePath}"/>
+    <input type="hidden" name="_method" value="DELETE"/>
     <input type="hidden" name="page.currentPage" id="currentPage" value="1"/>
     <div class="right">
-        <div class="current">当前位置：<a href="${basePath}/ad/initList">内容管理</a> &gt; 广告管理</div>
+        <div class="current">当前位置：<a href="${basePath}/user/list">内容管理</a> &gt; 广告管理</div>
         <div class="rightCont">
             <p class="g_title fix">广告列表</p>
             <table class="tab1">
