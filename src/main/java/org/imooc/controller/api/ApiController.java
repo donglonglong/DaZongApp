@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.taglibs.standard.lang.jstl.ELEvaluator;
 import org.imooc.constant.ApiCodeEnum;
 import org.imooc.dao.OrdersDao;
 import org.imooc.dto.*;
-import org.imooc.service.AdService;
-import org.imooc.service.BusinessService;
-import org.imooc.service.MemberService;
-import org.imooc.service.OrdersService;
+import org.imooc.service.*;
 import org.imooc.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +41,9 @@ public class ApiController {
 
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private CommentService commentService;
 	/**
 	 * 首页 —— 广告（超值特惠）
 	 * @throws IOException 
@@ -131,11 +132,33 @@ public class ApiController {
 	 * 提交评论
 	 */
 	@RequestMapping(value = "/submitComment", method = RequestMethod.POST)
-	public Map<String, Object> submitComment() {
-		Map<String, Object> result = new HashMap<>();
-		result.put("errno", 0);
-		result.put("msg", "ok");
-		return result;
+	public ApiCodeDto submitComment(CommentForSubmitDto dto) {
+//		Map<String, Object> result = new HashMap<>();
+//		result.put("errno", 0);
+//		result.put("msg", "ok");
+//		return result;
+		ApiCodeDto result;
+		//TODO 需要完成的步骤：
+		Long phone = memberService.getPhone(dto.getToken());
+		if(phone!= null && phone.equals(dto.getUsername())){
+			//2.根据手机号取出会员ID
+			Long memberId = memberService.getIdByPhone(phone);
+			//3.根据提交上来的订单ID获取对应的会员ID，效验当前登录的会员是否一致
+			OrdersDto ordersDto = ordersService.getById(dto.getId());
+			if(ordersDto.getMemberId().equals(memberId)){
+				//4.保存评论
+				commentService.add(dto);
+				result = new ApiCodeDto(ApiCodeEnum.SUCCESS);
+				//TODO
+				//5.还有一件重要的事未做
+				//新增玩订单后已售数量+1  创建指定定时任务
+			}else {
+				result = new ApiCodeDto(ApiCodeEnum.NO_AUTH);
+			}
+		}else {
+			result = new ApiCodeDto(ApiCodeEnum.NOT_LOGGED);
+		}
+		return  result;
 	}
 
 	/**
