@@ -19,7 +19,7 @@
                 and t.password = #{password}
             </if>
         </where>
-        order by id
+        order by convert(ch_name using gbk) collate gbk_chinese_ci
     </select>
 
     <insert id="insert">

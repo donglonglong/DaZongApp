@@ -60,7 +60,7 @@
 		                <div class="wuxianlogo"><img src="" alt="" height="28px" width="275px"/></div>
 		                <div class="h_info">
 		                    <span class="line"></span>
-							欢迎您！姓名[账号]&nbsp; 当前时间：2017年03月20日&nbsp;&nbsp;&nbsp;&nbsp;
+							欢迎您！姓名[??]&nbsp; 当前时间：2017年03月20日&nbsp;&nbsp;&nbsp;&nbsp;
 		                    <a href="javascript:void(0);" onclick="openAddDiv();">[修改密码]</a>
 		                    &nbsp;
 		                    <a href="javascript:void(0);" onclick="if(confirm('您确认退出系统?')){};">[退出系统]</a>
