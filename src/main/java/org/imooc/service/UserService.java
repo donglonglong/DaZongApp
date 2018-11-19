@@ -19,7 +19,7 @@ public interface UserService {
      * 获取用户列表
      * @return
      */
-    List<User> getList();
+    List<UserDto> getList();
     /**
      * 新增用户
      * @param userDto

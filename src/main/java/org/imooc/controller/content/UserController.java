@@ -1,6 +1,9 @@
 package org.imooc.controller.content;
 
+import com.sun.org.apache.regexp.internal.RE;
+import org.apache.taglibs.standard.lang.jstl.ELEvaluator;
 import org.imooc.content.PageCodeEnum;
+import org.imooc.dto.PageCodeDto;
 import org.imooc.dto.UserDto;
 import org.imooc.service.GroupService;
 import org.imooc.service.UserService;
@@ -12,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.xml.ws.EndpointReference;
+import java.util.List;
+
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -22,53 +28,68 @@ public class UserController {
     @Autowired
     private GroupService groupService;
 
-    @RequestMapping("/list")
-    public String UserList(Model model){
-        model.addAttribute("list",userService.getList());
-        return "/content/userList";
+    /***
+     * 获取用户列表
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public List<UserDto> getList(){
+        return userService.getList();
     }
 
-    @RequestMapping(value = "/modifyInit")
-    public String modifyInit(@RequestParam("id") Long id,Model model){
-        model.addAttribute("modifyObj",userService.getById(id));
-        model.addAttribute("groups",groupService.getAll());
-        System.out.println("所有的分类是："+groupService.getAll());
-        return "/content/userModify";
+    /***
+     * 新增用户
+     * @param
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    public PageCodeDto add(UserDto userDto){
+        PageCodeDto result;
+        if(userService.add(userDto)){
+            result = new PageCodeDto(PageCodeEnum.ADD_SUCCESS);
+        }else {
+            result = new PageCodeDto(PageCodeEnum.USERNAME_EXISTS);
+        }
+        return result;
     }
 
-    /**
+
+    /***
+     * 根据主键获取用户Dto
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserDto getById(@PathVariable("id") Long id) {
+        System.out.println("获取的ID值是："+id);
+        return userService.getById(id);
+    }
+
+    /***
      * 修改用户
      */
-    @RequestMapping(value = "/modify")
-    public String modify(@PathVariable("id") Long id,UserDto userDto) {
-        userService.modify(userDto);
-        return "redirect:list" ;
-    }
-
-
-    @RequestMapping(value = "/toadd")
-    public String toadd(Model model){
-        model.addAttribute("groups",groupService.getAll());
-        return "/content/userAdd";
-    }
-
-    @RequestMapping(value = "/add")
-    public String add(Model model,UserDto userDto){
-        if(userService.add(userDto)){
-            model.addAttribute(PageCodeEnum.KEY,PageCodeEnum.ADD_SUCCESS );
-        }else {
-            model.addAttribute(PageCodeEnum.KEY,PageCodeEnum.ADD_FAIL );
+    @RequestMapping(value="/{id}",method = RequestMethod.PUT)
+    public PageCodeDto modify(UserDto userDto) {
+        PageCodeDto result;
+        if(userService.modify(userDto)) {
+            result = new PageCodeDto(PageCodeEnum.MODIFY_SUCCESS);
+        } else {
+            result = new PageCodeDto(PageCodeEnum.USERNAME_EXISTS);
         }
-        return "redirect:list";
+        return result;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public String remove(@PathVariable("id") Long id) {
-        System.out.println("获取的ID值是："+id);
-        return "redirect:/businesses";
+    /***
+     * 删除用户
+     */
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    public PageCodeDto  remove(@PathVariable("id")Long id){
+        PageCodeDto result;
+        if(userService.remove(id)){
+            result =new PageCodeDto(PageCodeEnum.REMOVE_SUCCESS);
+        }else {
+            result = new PageCodeDto(PageCodeEnum.REMOVE_FAIL);
+        }
+        return  result;
     }
-
-
-
-
 }
