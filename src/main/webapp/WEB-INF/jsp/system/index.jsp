@@ -12,7 +12,7 @@
 	<body>
 		<!-- 蒙版DIV -->
 		<div id="mengban" style="display:none"></div>
-		
+
 		<div class="wishlistBox" style="display: none;left:550px;top:200px;">
 		    <div class="personRigTop persongBgimg" style="height:200px;width:480px;">
 		        <div class="persongRightTit" style="width:480px;">&nbsp;&nbsp;修改密码</div>
@@ -51,7 +51,7 @@
 		        </div>
 		    </div>
 		</div>
-		
+
 		<form method="post">
 		    <div id="header">
 		        <div class="iheader">
